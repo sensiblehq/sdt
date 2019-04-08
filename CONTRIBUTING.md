@@ -1,5 +1,11 @@
 # Contributing
 
+### Install Dependencies
+
+```sh
+$ glide install
+```
+
 ### Testing
 
 ```sh
