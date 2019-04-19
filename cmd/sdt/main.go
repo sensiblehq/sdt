@@ -15,7 +15,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 
@@ -25,10 +24,9 @@ import (
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "boom"
-	app.Usage = "make an explosive entrance"
+	app.Name = "sdt"
+	app.Usage = "Schema Translator"
 	app.Action = func(c *cli.Context) error {
-		fmt.Println("boom! I say!")
 
 		db, err := sql.Open("postgres", "host=localhost port=5432 dbname=troyharvey sslmode=disable")
 		if err != nil {
