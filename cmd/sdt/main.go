@@ -14,17 +14,46 @@ limitations under the License.
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
-	"github.com/sensiblehq/sdt/pkg/cli"
+	_ "github.com/lib/pq"
+	"github.com/urfave/cli"
 )
 
 func main() {
-	app := cli.App(version)
+	app := cli.NewApp()
+	app.Name = "boom"
+	app.Usage = "make an explosive entrance"
+	app.Action = func(c *cli.Context) error {
+		fmt.Println("boom! I say!")
 
-	if err := app.Run(os.Args); err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		db, err := sql.Open("postgres", "host=localhost port=5432 dbname=troyharvey sslmode=disable")
+		if err != nil {
+			panic(err)
+		}
+
+		sqlStatement := `SELECT table_schema, table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');`
+		var table_schema string
+		var table_name string
+		row := db.QueryRow(sqlStatement)
+		switch err := row.Scan(&table_schema, &table_name); err {
+		case sql.ErrNoRows:
+			fmt.Println("No rows were returned!")
+		case nil:
+			fmt.Println(table_schema, table_name)
+		default:
+			panic(err)
+		}
+
+		defer db.Close()
+		return nil
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
