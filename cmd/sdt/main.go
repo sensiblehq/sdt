@@ -36,16 +36,26 @@ func main() {
 		}
 
 		sqlStatement := `SELECT table_schema, table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema');`
-		var table_schema string
-		var table_name string
-		row := db.QueryRow(sqlStatement)
-		switch err := row.Scan(&table_schema, &table_name); err {
-		case sql.ErrNoRows:
-			fmt.Println("No rows were returned!")
-		case nil:
-			fmt.Println(table_schema, table_name)
-		default:
-			panic(err)
+		var (
+			table_schema string
+			table_name   string
+		)
+
+		rows, err := db.Query(sqlStatement)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+		for rows.Next() {
+			err := rows.Scan(&table_schema, &table_name)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println(table_schema, table_name)
+		}
+		err = rows.Err()
+		if err != nil {
+			log.Fatal(err)
 		}
 
 		defer db.Close()
