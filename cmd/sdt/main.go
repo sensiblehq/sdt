@@ -28,7 +28,12 @@ func main() {
 	app.Usage = "Schema Translator"
 	app.Action = func(c *cli.Context) error {
 
-		db, err := sql.Open("postgres", "host=localhost port=5432 dbname=troyharvey sslmode=disable")
+		connectString := c.Args().First()
+		if connectString == "" {
+			panic("Pass a connection string url. Like this: postgres://username:password@localhost/db?sslmode=disable")
+		}
+
+		db, err := sql.Open("postgres", connectString)
 		if err != nil {
 			panic(err)
 		}
