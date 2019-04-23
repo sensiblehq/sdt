@@ -1,8 +1,23 @@
-hash: d6ce27e3ad134fd4160eb30f370017f52b02ea997b32fad99a05bae6aa4922e0
-updated: 2019-04-07T20:40:57.200472-04:00
+hash: ba69bfb94a2e438d7c0afadd7559eb07f4db9cb96d2019903d0947e717183fa4
+updated: 2019-04-18T22:30:55.853268-04:00
 imports:
+- name: github.com/lib/pq
+  version: 51e2106eed1cea199c802d2a49e91e2491b02056
+  subpackages:
+  - oid
+  - scram
 - name: github.com/stretchr/testify
   version: ffdc059bfe9ce6a4e144ba849dbedead332c6053
+  subpackages:
+  - assert
 - name: github.com/urfave/cli
   version: cfb38830724cc34fedffe9a2a29fb54fa9169cd1
-testImports: []
+testImports:
+- name: github.com/davecgh/go-spew
+  version: d8f796af33cc11cb798c1aaeb27a4ebc5099927d
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: 5d4384ee4fb2527b0a1256a821ebfc92f91efefc
+  subpackages:
+  - difflib
